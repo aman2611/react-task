@@ -1,8 +1,8 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import Header from './Header';
 import { useLocation } from 'react-router-dom';
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default function Layout({ children }) {
   const location = useLocation();
   const isAuthPage = ['/login', '/register'].includes(location.pathname);
 

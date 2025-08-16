@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function CartBadge({ count }: { count: number }) {
+export default function CartBadge({ count }) {
   if (count === 0) return null;
 
   return (

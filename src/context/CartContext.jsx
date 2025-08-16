@@ -1,42 +1,8 @@
-import React, { createContext, useContext, useReducer, ReactNode } from 'react';
+import React, { createContext, useContext, useReducer } from 'react';
 
-export type Product = {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-  category: string;
-  description: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
-};
+const CartContext = createContext(undefined);
 
-export type CartItem = Product & {
-  quantity: number;
-};
-
-type CartState = {
-  items: CartItem[];
-  total: number;
-  itemCount: number;
-};
-
-type CartAction =
-  | { type: 'ADD_TO_CART'; payload: Product }
-  | { type: 'REMOVE_FROM_CART'; payload: number }
-  | { type: 'UPDATE_QUANTITY'; payload: { id: number; quantity: number } }
-  | { type: 'CLEAR_CART' };
-
-const CartContext = createContext<CartState & {
-  addToCart: (product: Product) => void;
-  removeFromCart: (id: number) => void;
-  updateQuantity: (id: number, quantity: number) => void;
-  clearCart: () => void;
-} | undefined>(undefined);
-
-function cartReducer(state: CartState, action: CartAction): CartState {
+function cartReducer(state, action) {
   switch (action.type) {
     case 'ADD_TO_CART': {
       const existingItem = state.items.find(item => item.id === action.payload.id);
@@ -81,28 +47,28 @@ function cartReducer(state: CartState, action: CartAction): CartState {
   }
 }
 
-function calculateTotals(items: CartItem[]): CartState {
+function calculateTotals(items) {
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
   return { items, total, itemCount };
 }
 
-export function CartProvider({ children }: { children: ReactNode }) {
+export function CartProvider({ children }) {
   const [state, dispatch] = useReducer(cartReducer, {
     items: [],
     total: 0,
     itemCount: 0,
   });
 
-  const addToCart = (product: Product) => {
+  const addToCart = (product) => {
     dispatch({ type: 'ADD_TO_CART', payload: product });
   };
 
-  const removeFromCart = (id: number) => {
+  const removeFromCart = (id) => {
     dispatch({ type: 'REMOVE_FROM_CART', payload: id });
   };
 
-  const updateQuantity = (id: number, quantity: number) => {
+  const updateQuantity = (id, quantity) => {
     dispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } });
   };
 

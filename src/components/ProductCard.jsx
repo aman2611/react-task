@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Star, ShoppingCart } from 'lucide-react';
-import { Product, useCart } from '../context/CartContext';
+import { useCart } from '../context/CartContext';
 
-export default function ProductCard({ product }: { product: Product }) {
+export default function ProductCard({ product }) {
   const { addToCart } = useCart();
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
     addToCart(product);
